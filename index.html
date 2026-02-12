@@ -240,7 +240,7 @@
     function finalLovePopup(){
       startConfetti(2000);
       showModal({
-        title: "OKAY OKAY 💞",
+        title: "HEHEHE.. 🥰💞",
         message: `I LOVE YOU MY VALENTINE 💕💘💓♥️`,
         buttons: [
           { label: "💖", kind: "yes", onClick: () => closeModal() }
@@ -262,10 +262,10 @@
     function areYouSure2(){
       showModal({
         title: "🤨",
-        message: `ARE YOU SURE??🤨`,
+        message: `Try again 🤨 Do you want to be my Valentine?`,
         buttons: [
-          { label: "Yes", kind: "yes", onClick: lovePopup },
-          { label: "No", kind: "no", onClick: tryAgainPopup }
+          { label: "Yes!", kind: "yes", onClick: lovePopup },
+          { label: "Hell No", kind: "no", onClick: tryAgainPopup }
         ]
       });
     }
@@ -275,8 +275,8 @@
         title: "Wait…",
         message: `Are you sure?`,
         buttons: [
-          { label: "Yes", kind: "yes", onClick: lovePopup },
-          { label: "No", kind: "no", onClick: areYouSure2 }
+          { label: "Yes", kind: "yes", onClick: areYouSure2 },
+          { label: "No, i change my mind 😌", kind: "no", onClick: lovePopup }
         ]
       });
     }
@@ -284,7 +284,7 @@
     function firstPopup(){
       showModal({
         title: "Valentine’s Day 💘",
-        message: `Will you be my valentine, Marco?`,
+        message: `Marco, Will you be my Valentine?`,
         buttons: [
           { label: "Yes", kind: "yes", onClick: lovePopup },
           { label: "No", kind: "no", onClick: areYouSure1 }
