@@ -245,32 +245,48 @@
 
     // YES path: cute animals screen -> final
     function cuteAnimalsPopup(){
-      showModal({
-        title: "AWWWW 😭💘",
-        message: `
-          <div class="kissStage">
-            <span class="animal">🐥</span>
-            <span class="kiss">💋</span>
-            <span class="animal">🐻</span>
-          </div>
-          <div>Okay wait… that was so cute 🥺💞</div>
-        `,
-        buttons: [
-          { label: "Continue 💘", kind: "yes", onClick: finalLovePopup }
-        ]
-      });
-    }
+  showModal({
+    title: "AWWWW 😭💘",
+    message: `
+      <div class="kissStage">
+        <span class="animal">🐥</span>
+        <span class="kiss">💋</span>
+        <span class="animal">🐻</span>
+      </div>
+      <div>Okay wait… that was so cute 🥺💞</div>
+    `,
+    buttons: [
+      { label: "Continue 💘", kind: "yes", onClick: yesPopupC }
+    ]
+  });
+}
+
+    function yesPopupC(){
+  showModal({
+    title: "COME HERE MY MAN 😌💞",
+    message: `That’s my valentine 😘<br/>Come collect your kisses 💋`,
+    buttons: [
+      { label: "I’m coming 😳", kind: "yes", onClick: finalLovePopup }
+    ]
+  });
+}
 
     function finalLovePopup(){
-      startConfetti();
-      showModal({
-        title: "LOCKED IN 🔒💘",
-        message: `🎉<br/>I LOVE YOU MY VALENTINE 💕💘💓♥️`,
-        buttons: [
-          { label: "💖", kind: "yes", onClick: closeModal }
-        ]
-      });
-    }
+  startConfetti(4200);
+  showModal({
+    title: "IT’S OFFICIAL. YOU’RE MINE. 🔒💘",
+    message: `🎉✨💖<br/>
+      CONGRATULATIONS, MARCO.<br/>
+      You have been <b>CLAIMED</b> as my Valentine. 😌💞<br/><br/>
+      💋 Unlimited kisses<br/>
+      🫶 Unlimited cuddles<br/>
+      💘 Unlimited “come here my man” privileges<br/><br/>
+      Welcome to the cutest love story ever. 💕💘💓♥️`,
+    buttons: [
+      { label: "Say it back 😘", kind: "yes", onClick: closeModal }
+    ]
+  });
+}
 
     // Try again prompt (goes back to start)
     function tryAgainPrompt(){
@@ -278,7 +294,7 @@
         title: "Try again 😌💅",
         message: `Oops… wrong answer 😭💘<br/>Go again, Marco.`,
         buttons: [
-          { label: "Try again 🔁", kind: "yes", onClick: () => { resetRefusals(); firstPopup(); } }
+          { label: "Try again.. hehe 🔁", kind: "yes", onClick: () => { resetRefusals(); firstPopup(); } }
         ]
       });
     }
