@@ -249,9 +249,9 @@
         title: "AWWWW 😭💘",
         message: `
           <div class="kissStage">
-            <span class="animal">🐻</span>
+            <span class="animal">🐥</span>
             <span class="kiss">💋</span>
-            <span class="animal">🐰</span>
+            <span class="animal">🐻</span>
           </div>
           <div>Okay wait… that was so cute 🥺💞</div>
         `,
@@ -343,15 +343,15 @@
     }
 
     function noPrompt4(){
-      showModal({
-        title: "I’M BEGGING 😭👉🏻👈🏻",
-        message: `This is getting personal…<br/>Are you STILL sure? 🥺`,
-        buttons: [
-          { label: "Yes 😶", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt5) },
-          { label: "Nooo 😭", kind: "yes", onClick: tryAgainPrompt }
-        ]
-      });
-    }
+  showModal({
+    title: "OKAY WAIT 😭💔",
+    message: `You’re really about to say NO again??<br/>Be serious right now 🤨`,
+    buttons: [
+      { label: "Yes 😶", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt5) },
+      { label: "Nooo 😭", kind: "yes", onClick: tryAgainPrompt }
+    ]
+  });
+}
 
     function noPrompt5(){
       showModal({
