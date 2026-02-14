@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Be My Valentine 💘</title>
+  <title>Marco, Be My Valentine 💘</title>
   <style>
     :root{
-      --bg1:#ffdde9; --bg2:#fff0f5;
-      --card:#ffffffcc; --border:#ff6fa1;
-      --text:#2b2b2b; --pink:#ff3b84; --pink2:#ff77a8;
+      --bg1:#ffd6e7; --bg2:#fff0f7;
+      --card:#ffffffcc; --border:#ff4f93;
+      --text:#2b2b2b; --pink:#ff2f7a; --pink2:#ff7fb0;
     }
     *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
     body{
@@ -17,13 +17,13 @@
       overflow:hidden;
     }
 
-    /* soft floating hearts background */
-    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.35}
+    /* more hearts */
+    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.45}
     .heart{
       position:absolute; width:16px; height:16px; transform:rotate(45deg);
       background:var(--pink);
       animation:floatUp linear infinite;
-      filter:blur(.1px);
+      filter:blur(.08px);
     }
     .heart::before,.heart::after{
       content:""; position:absolute; width:16px; height:16px; border-radius:50%;
@@ -33,18 +33,17 @@
     .heart::after{left:0; top:-8px}
     @keyframes floatUp{
       from{transform:translateY(120vh) rotate(45deg); opacity:0}
-      10%{opacity:.9}
+      10%{opacity:1}
       to{transform:translateY(-20vh) rotate(45deg); opacity:0}
     }
 
-    /* modal overlay */
     .overlay{
       position:fixed; inset:0; background:#00000055;
       display:flex; align-items:center; justify-content:center;
       padding:20px;
     }
     .modal{
-      width:min(460px, 95vw);
+      width:min(480px, 95vw);
       background:var(--card);
       border:2px solid var(--border);
       backdrop-filter: blur(10px);
@@ -56,39 +55,34 @@
     }
     @keyframes pop{from{transform:scale(.92);opacity:.2}to{transform:scale(1);opacity:1}}
     .title{
-      display:flex; align-items:center; gap:10px;
-      font-weight:800; color:var(--pink);
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      font-weight:900; color:var(--pink);
       margin:0 0 10px;
       font-size:20px;
+      text-align:center;
     }
     .msg{
       margin:0 0 16px;
       color:var(--text);
       font-size:18px;
       line-height:1.35;
-      font-weight:700;
+      font-weight:800;
       text-align:center;
     }
     .btns{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
     button{
       border:none; border-radius:999px;
-      padding:10px 16px;
-      font-weight:800; cursor:pointer;
+      padding:11px 18px;
+      font-weight:900; cursor:pointer;
       transition:.12s transform ease, .12s filter ease;
       font-size:14px;
+      letter-spacing:.2px;
     }
     button:hover{transform:translateY(-1px); filter:brightness(1.05)}
     .yes{background:linear-gradient(135deg,var(--pink),var(--pink2)); color:white}
     .no{background:#ffffff; border:2px solid #ffb3cc; color:#c11855}
-    .tiny{
-      text-align:center; margin-top:12px; font-size:12px; color:#7a2a46;
-      font-weight:700;
-    }
 
-    /* confetti canvas */
-    canvas#confetti{
-      position:fixed; inset:0; pointer-events:none;
-    }
+    canvas#confetti{position:fixed; inset:0; pointer-events:none;}
   </style>
 </head>
 <body>
@@ -96,30 +90,30 @@
   <canvas id="confetti"></canvas>
 
   <script>
-    // --- hearts background ---
+    // --- hearts background (MORE) ---
     (function spawnHearts(){
       const wrap = document.getElementById('hearts');
-      const count = 22;
+      const count = 55; // more hearts 💖
       for(let i=0;i<count;i++){
         const h = document.createElement('div');
         h.className = 'heart';
         const left = Math.random()*100;
         const delay = Math.random()*4;
-        const dur = 4 + Math.random()*6;
-        const size = 10 + Math.random()*18;
+        const dur = 4 + Math.random()*7;
+        const size = 10 + Math.random()*22;
         h.style.left = left + 'vw';
         h.style.animationDelay = delay + 's';
         h.style.animationDuration = dur + 's';
         h.style.width = size + 'px';
         h.style.height = size + 'px';
-        h.style.opacity = 0.2 + Math.random()*0.7;
+        h.style.opacity = 0.25 + Math.random()*0.7;
         wrap.appendChild(h);
       }
     })();
 
     // --- modal builder ---
-    function showModal({title="Valentine 💘", message="", buttons=[], footnote=""}){
-      closeModal(); // only one at a time
+    function showModal({title="Valentine 💘", message="", buttons=[]}){
+      closeModal();
       const overlay = document.createElement('div');
       overlay.className = 'overlay';
       overlay.id = 'overlay';
@@ -129,7 +123,7 @@
 
       const h = document.createElement('div');
       h.className = 'title';
-      h.innerHTML = `💌 <span>${title}</span>`;
+      h.innerHTML = `💌 <span>${title}</span> 💌`;
 
       const p = document.createElement('div');
       p.className = 'msg';
@@ -146,15 +140,9 @@
         bwrap.appendChild(b);
       });
 
-      const small = document.createElement('div');
-      small.className = 'tiny';
-      small.textContent = footnote;
-
       modal.appendChild(h);
       modal.appendChild(p);
       modal.appendChild(bwrap);
-      if(footnote) modal.appendChild(small);
-
       overlay.appendChild(modal);
       document.body.appendChild(overlay);
     }
@@ -177,10 +165,10 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    function startConfetti(durationMs = 1600){
+    function startConfetti(durationMs = 1700){
       const w = confettiCanvas.width, h = confettiCanvas.height;
       confettiPieces = [];
-      for(let i=0;i<160;i++){
+      for(let i=0;i<180;i++){
         confettiPieces.push({
           x: Math.random()*w,
           y: -20 - Math.random()*h*0.2,
@@ -202,13 +190,11 @@
           c.x += c.vx;
           c.y += c.vy;
           c.rot += c.vr;
-          // gravity
           c.vy += 0.03;
 
           ctx.save();
           ctx.translate(c.x, c.y);
           ctx.rotate(c.rot);
-          // random-ish colors w/out hardcoding a palette list
           ctx.fillStyle = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
           ctx.fillRect(-c.r, -c.r, c.r*2, c.r*2);
           ctx.restore();
@@ -224,60 +210,64 @@
       requestAnimationFrame(frame);
     }
 
-    // --- flow functions ---
+    // --- NEW FLOW: force yes after 4th NO ---
+    let noCount = 0;
+
     function lovePopup(){
       startConfetti();
       showModal({
-        title: "Valentine’s Day 💘",
-        message: `🎉 <br/>I love you my 😘valentine 💘`,
+        title: "YAYYY 💞",
+        message: `🎉 <br/>I love you my 😘 valentine 💘`,
         buttons: [
-          { label: "Aww 🥰", kind: "yes", onClick: () => closeModal() }
-        ],
-        footnote: "You’re stuck with me now."
+          { label: "Aww stop 😭💖", kind: "yes", onClick: finalLovePopup }
+        ]
       });
     }
 
     function finalLovePopup(){
-      startConfetti(2000);
+      startConfetti(2200);
       showModal({
-        title: "HEHEHE..😘💞",
+        title: "LOCKED IN 🔒💘",
         message: `I LOVE YOU MY VALENTINE 💕💘💓♥️`,
         buttons: [
-          { label: "💖", kind: "yes", onClick: () => closeModal() }
+          { label: "💖", kind: "yes", onClick: closeModal }
         ]
       });
     }
 
-    function tryAgainPopup(){
+    function forcedYesPopup(){
       showModal({
-        title: "TRY AGAIN ",
-        message: `Wait… last chance 😤`,
+        title: "TRY AGAIN 😌💅",
+        message: `No more “No” 😭<br/>Pick the correct answer, Marco 💘`,
         buttons: [
-          { label: "YES", kind: "yes", onClick: finalLovePopup },
-          { label: "FINE, OKAY!", kind: "yes", onClick: finalLovePopup }
+          { label: "YES 💞", kind: "yes", onClick: lovePopup },
+          { label: "OF COURSE 😘", kind: "yes", onClick: lovePopup }
         ]
       });
     }
 
-    function areYouSure2(){
-      showModal({
-        title: "TRY AGAIN 🤨",
-        message: `WILL YOU BE MY VALENTINE??`,
-,
-        buttons: [
-          { label: "Sure", kind: "yes", onClick: lovePopup },
-          { label: "Hell No", kind: "no", onClick: tryAgainPopup }
-        ]
-      });
-    }
+    function noChainPopup(){
+      noCount++;
 
-    function areYouSure1(){
+      // Force them after 4th NO click
+      if(noCount >= 4){
+        return forcedYesPopup();
+      }
+
+      const steps = [
+        { title: "Hold up 😳", msg: `Are you sure? 🥺`, yesText:"Yes", noText:"No" },
+        { title: "EXCUSE ME? 🤨", msg: `ARE YOU SURE??🤨`, yesText:"Yes…", noText:"No 😅" },
+        { title: "LAST CHANCE 😤", msg: `LAST CHANCE… are you SURE??? 😭💔`, yesText:"Yes", noText:"No ok ok" }
+      ];
+
+      const step = steps[noCount-1];
+
       showModal({
-        title: "Wait…",
-        message: `Are you sure?`,
+        title: step.title,
+        message: step.msg,
         buttons: [
-          { label: "No, I change my mind💝", kind: "yes", onClick: lovePopup },
-          { label: "Yes", kind: "no", onClick: areYouSure2 }
+          { label: step.yesText, kind: "yes", onClick: lovePopup },
+          { label: step.noText, kind: "no", onClick: noChainPopup }
         ]
       });
     }
@@ -285,16 +275,14 @@
     function firstPopup(){
       showModal({
         title: "Valentine’s Day 💘",
-        message: `Marco, Will you be my Valentine?`,
+        message: `Marco, will you be my valentine? 🥺👉🏻👈🏻<br/>💝💘💖`,
         buttons: [
-          { label: "Yes", kind: "yes", onClick: lovePopup },
-          { label: "No", kind: "no", onClick: areYouSure1 }
-        ],
-        footnote: "Pick wisely 😇"
+          { label: "YES 💞", kind: "yes", onClick: lovePopup },
+          { label: "No 😭", kind: "no", onClick: noChainPopup }
+        ]
       });
     }
 
-    // start
     firstPopup();
   </script>
 </body>
