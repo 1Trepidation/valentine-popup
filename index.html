@@ -246,7 +246,7 @@
     // YES path: cute animals screen -> final
     function cuteAnimalsPopup(){
   showModal({
-    title: "FINALLY!! 😭🏆🐥💋🐻",
+    title: "YAAAY!! 😭🏆🐥💋🐻",
     message: `
       <div class="kissStage">
         <span class="animal">🐥</span>
@@ -254,7 +254,6 @@
         <span class="animal">🐻</span>
       </div>
       <div>
-        Even the chicken and the bear said “YES” with their whole chest. 😭💘<br/><br/>
         <b>Congrats, Marco.</b> You’ve officially unlocked:<br/>
         🏆 Valentine Status<br/>
         🎁 Your Prize<br/><br/>
@@ -263,16 +262,6 @@
     `,
     buttons: [
       { label: "I’m coming 😳🎁", kind: "yes", onClick: yesPopupC }
-    ]
-  });
-}
-
-    function yesPopupC(){
-  showModal({
-    title: "COME HERE MY MAN 😌💞",
-    message: `That’s my valentine 😘<br/>Come collect your kisses 💋`,
-    buttons: [
-      { label: "I’m coming 😳", kind: "yes", onClick: finalLovePopup }
     ]
   });
 }
@@ -286,7 +275,7 @@
       You have been <b>CLAIMED</b> as my Valentine. 😌💞<br/><br/>
       💋 Unlimited kisses<br/>
       🫶 Unlimited cuddles<br/>
-      💘 Unlimited “come here my man” privileges<br/><br/>
+      💘 Unlimited Sexy time<br/><br/>
       Welcome to the cutest love story ever. 💕💘💓♥️`,
     buttons: [
       { label: "Say it back 😘", kind: "yes", onClick: closeModal }
@@ -297,7 +286,7 @@
     // Try again prompt (goes back to start)
     function tryAgainPrompt(){
       showModal({
-        title: "Try again 😌💅",
+        title: "Try again 😌",
         message: `Oops… wrong answer 😭💘<br/>Go again, Marco.`,
         buttons: [
           { label: "Try again.. hehe 🔁", kind: "yes", onClick: () => { resetRefusals(); firstPopup(); } }
