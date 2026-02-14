@@ -219,4 +219,164 @@
           ctx.save();
           ctx.translate(c.x, c.y);
           ctx.rotate(c.rot);
-          ctx.fillStyle
+          ctx.fillStyle = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
+          ctx.fillRect(-c.r, -c.r, c.r*2, c.r*2);
+          ctx.restore();
+        }
+
+        if(t - start < durationMs){
+          requestAnimationFrame(frame);
+        } else {
+          confettiRunning = false;
+          ctx.clearRect(0,0,w,h);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // -----------------------------
+    // FLOW LOGIC (as requested)
+    // -----------------------------
+    let refusalCount = 0; // count of "refusals" until we force yes at 5
+
+    function resetRefusals(){
+      refusalCount = 0;
+    }
+
+    // YES path: cute animals screen -> final
+    function cuteAnimalsPopup(){
+      showModal({
+        title: "AWWWW 😭💘",
+        message: `
+          <div class="kissStage">
+            <span class="animal">🐻</span>
+            <span class="kiss">💋</span>
+            <span class="animal">🐰</span>
+          </div>
+          <div>Okay wait… that was so cute 🥺💞</div>
+        `,
+        buttons: [
+          { label: "Continue 💘", kind: "yes", onClick: finalLovePopup }
+        ]
+      });
+    }
+
+    function finalLovePopup(){
+      startConfetti();
+      showModal({
+        title: "LOCKED IN 🔒💘",
+        message: `🎉<br/>I LOVE YOU MY VALENTINE 💕💘💓♥️`,
+        buttons: [
+          { label: "💖", kind: "yes", onClick: closeModal }
+        ]
+      });
+    }
+
+    // Try again prompt (goes back to start)
+    function tryAgainPrompt(){
+      showModal({
+        title: "Try again 😌💅",
+        message: `Oops… wrong answer 😭💘<br/>Go again, Marco.`,
+        buttons: [
+          { label: "Try again 🔁", kind: "yes", onClick: () => { resetRefusals(); firstPopup(); } }
+        ]
+      });
+    }
+
+    // Forced yes after 5 refusals
+    function forcedYesPopup(){
+      showModal({
+        title: "OKAY THAT’S ENOUGH 😤💘",
+        message: `You’ve refused <b>5</b> times 😭<br/>Now pick the correct answer.`,
+        buttons: [
+          { label: "YES 💞", kind: "yes", onClick: cuteAnimalsPopup },
+          { label: "OF COURSE 😘", kind: "yes", onClick: cuteAnimalsPopup }
+        ]
+      });
+    }
+
+    // Handle a refusal click; force at 5
+    function addRefusalAndMaybeForce(nextFn){
+      refusalCount++;
+      if(refusalCount >= 5){
+        forcedYesPopup();
+      } else {
+        nextFn();
+      }
+    }
+
+    // No Prompt #1 (SPECIAL LOGIC)
+    // If they click YES -> they are sure they do NOT want to be valentine -> go to No Prompt #2
+    // If they click NO -> they are NOT sure -> go to Try Again prompt
+    function noPrompt1(){
+      showModal({
+        title: "Waittt 😳",
+        message: `Are you sure you <b>DO NOT</b> want to be my valentine? 🥺💔`,
+        buttons: [
+          { label: "Yes, I'm sure 😐", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt2) },
+          { label: "No… I'm not sure 🥺", kind: "yes", onClick: tryAgainPrompt }
+        ]
+      });
+    }
+
+    // No Prompt #2+
+    function noPrompt2(){
+      showModal({
+        title: "EXCUSE ME? 🤨",
+        message: `ARE YOU SURE??🤨<br/><small>(This is your villain origin story)</small>`,
+        buttons: [
+          { label: "Yes 😤", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt3) },
+          { label: "No 😅", kind: "yes", onClick: tryAgainPrompt }
+        ]
+      });
+    }
+
+    function noPrompt3(){
+      showModal({
+        title: "LAST CHANCE 😭",
+        message: `LAST CHANCE… are you REALLY sure??? 💔`,
+        buttons: [
+          { label: "Yes 😬", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt4) },
+          { label: "No okay fine 🙈", kind: "yes", onClick: tryAgainPrompt }
+        ]
+      });
+    }
+
+    function noPrompt4(){
+      showModal({
+        title: "I’M BEGGING 😭👉🏻👈🏻",
+        message: `This is getting personal…<br/>Are you STILL sure? 🥺`,
+        buttons: [
+          { label: "Yes 😶", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt5) },
+          { label: "Nooo 😭", kind: "yes", onClick: tryAgainPrompt }
+        ]
+      });
+    }
+
+    function noPrompt5(){
+      showModal({
+        title: "FINAL FINAL 😤",
+        message: `Okay… for real… are you SURE sure?? 🤨💘`,
+        buttons: [
+          { label: "Yes. 😑", kind: "no", onClick: () => addRefusalAndMaybeForce(()=>{}) },
+          { label: "No 🥺", kind: "yes", onClick: tryAgainPrompt }
+        ]
+      });
+    }
+
+    // FIRST POPUP
+    function firstPopup(){
+      showModal({
+        title: "Valentine’s Day 💘",
+        message: `Marco, will you be my valentine? 🥺👉🏻👈🏻<br/>💝💘💖`,
+        buttons: [
+          { label: "YES 💞", kind: "yes", onClick: cuteAnimalsPopup },
+          { label: "No 😭", kind: "no", onClick: () => addRefusalAndMaybeForce(noPrompt1) }
+        ]
+      });
+    }
+
+    firstPopup();
+  </script>
+</body>
+</html>
