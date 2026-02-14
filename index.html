@@ -246,17 +246,21 @@
     // YES path: cute animals screen -> final
     function cuteAnimalsPopup(){
   showModal({
-    title: "AWWWW 😭💘",
+    title: "HELP DESK OPEN 🧑‍💻🐥🐻",
     message: `
       <div class="kissStage">
         <span class="animal">🐥</span>
         <span class="kiss">💋</span>
         <span class="animal">🐻</span>
       </div>
-      <div>Okay wait… that was so cute 🥺💞</div>
+      <div>
+        Hi, you’ve reached Valentine Support.<br/>
+        We noticed you’re struggling to click “Yes.”<br/>
+        Would you like me to do it for you? 😭💘
+      </div>
     `,
     buttons: [
-      { label: "Continue 💘", kind: "yes", onClick: yesPopupC }
+      { label: "NOOO I GOT IT 😳", kind: "yes", onClick: yesPopupC }
     ]
   });
 }
