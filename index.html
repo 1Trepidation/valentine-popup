@@ -17,8 +17,8 @@
       overflow:hidden;
     }
 
-    /* more hearts */
-    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.45}
+    /* hearts background */
+    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.5}
     .heart{
       position:absolute; width:16px; height:16px; transform:rotate(45deg);
       background:var(--pink);
@@ -43,7 +43,7 @@
       padding:20px;
     }
     .modal{
-      width:min(480px, 95vw);
+      width:min(520px, 95vw);
       background:var(--card);
       border:2px solid var(--border);
       backdrop-filter: blur(10px);
@@ -66,7 +66,7 @@
       color:var(--text);
       font-size:18px;
       line-height:1.35;
-      font-weight:800;
+      font-weight:850;
       text-align:center;
     }
     .btns{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
@@ -83,6 +83,30 @@
     .no{background:#ffffff; border:2px solid #ffb3cc; color:#c11855}
 
     canvas#confetti{position:fixed; inset:0; pointer-events:none;}
+
+    /* cute animal kiss animation */
+    .kissStage{
+      display:flex; align-items:center; justify-content:center;
+      gap:16px; margin:6px 0 14px;
+      font-size:56px;
+      user-select:none;
+    }
+    .animal{animation:bop 1s ease-in-out infinite}
+    .animal:nth-child(1){animation-delay:.05s}
+    .animal:nth-child(3){animation-delay:.25s}
+    @keyframes bop{
+      0%,100%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-6px) scale(1.03)}
+    }
+    .kiss{
+      font-size:44px;
+      animation:popKiss .85s ease-in-out infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+    }
+    @keyframes popKiss{
+      0%,100%{transform:scale(1); opacity:.85}
+      50%{transform:scale(1.18); opacity:1}
+    }
   </style>
 </head>
 <body>
@@ -90,10 +114,10 @@
   <canvas id="confetti"></canvas>
 
   <script>
-    // --- hearts background (MORE) ---
+    // --- hearts background (more) ---
     (function spawnHearts(){
       const wrap = document.getElementById('hearts');
-      const count = 55; // more hearts 💖
+      const count = 70; // more hearts 💖
       for(let i=0;i<count;i++){
         const h = document.createElement('div');
         h.className = 'heart';
@@ -106,7 +130,7 @@
         h.style.animationDuration = dur + 's';
         h.style.width = size + 'px';
         h.style.height = size + 'px';
-        h.style.opacity = 0.25 + Math.random()*0.7;
+        h.style.opacity = 0.25 + Math.random()*0.75;
         wrap.appendChild(h);
       }
     })();
@@ -165,10 +189,10 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    function startConfetti(durationMs = 1700){
+    function startConfetti(durationMs = 2200){
       const w = confettiCanvas.width, h = confettiCanvas.height;
       confettiPieces = [];
-      for(let i=0;i<180;i++){
+      for(let i=0;i<200;i++){
         confettiPieces.push({
           x: Math.random()*w,
           y: -20 - Math.random()*h*0.2,
@@ -195,95 +219,4 @@
           ctx.save();
           ctx.translate(c.x, c.y);
           ctx.rotate(c.rot);
-          ctx.fillStyle = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
-          ctx.fillRect(-c.r, -c.r, c.r*2, c.r*2);
-          ctx.restore();
-        }
-
-        if(t - start < durationMs){
-          requestAnimationFrame(frame);
-        } else {
-          confettiRunning = false;
-          ctx.clearRect(0,0,w,h);
-        }
-      }
-      requestAnimationFrame(frame);
-    }
-
-    // --- NEW FLOW: force yes after 4th NO ---
-    let noCount = 0;
-
-    function lovePopup(){
-      startConfetti();
-      showModal({
-        title: "YAYYY 💞",
-        message: `🎉 <br/>I love you my 😘 valentine 💘`,
-        buttons: [
-          { label: "Aww stop 😭💖", kind: "yes", onClick: finalLovePopup }
-        ]
-      });
-    }
-
-    function finalLovePopup(){
-      startConfetti(2200);
-      showModal({
-        title: "LOCKED IN 🔒💘",
-        message: `I LOVE YOU MY VALENTINE 💕💘💓♥️`,
-        buttons: [
-          { label: "💖", kind: "yes", onClick: closeModal }
-        ]
-      });
-    }
-
-    function forcedYesPopup(){
-      showModal({
-        title: "TRY AGAIN 😌💅",
-        message: `No more “No” 😭<br/>Pick the correct answer, Marco 💘`,
-        buttons: [
-          { label: "YES 💞", kind: "yes", onClick: lovePopup },
-          { label: "OF COURSE 😘", kind: "yes", onClick: lovePopup }
-        ]
-      });
-    }
-
-    function noChainPopup(){
-      noCount++;
-
-      // Force them after 4th NO click
-      if(noCount >= 4){
-        return forcedYesPopup();
-      }
-
-      const steps = [
-        { title: "Hold up 😳", msg: `Are you sure? 🥺`, yesText:"Yes", noText:"No" },
-        { title: "EXCUSE ME? 🤨", msg: `ARE YOU SURE??🤨`, yesText:"Yes…", noText:"No 😅" },
-        { title: "LAST CHANCE 😤", msg: `LAST CHANCE… are you SURE??? 😭💔`, yesText:"Yes", noText:"No ok ok" }
-      ];
-
-      const step = steps[noCount-1];
-
-      showModal({
-        title: step.title,
-        message: step.msg,
-        buttons: [
-          { label: step.yesText, kind: "yes", onClick: lovePopup },
-          { label: step.noText, kind: "no", onClick: noChainPopup }
-        ]
-      });
-    }
-
-    function firstPopup(){
-      showModal({
-        title: "Valentine’s Day 💘",
-        message: `Marco, will you be my valentine? 🥺👉🏻👈🏻<br/>💝💘💖`,
-        buttons: [
-          { label: "YES 💞", kind: "yes", onClick: lovePopup },
-          { label: "No 😭", kind: "no", onClick: noChainPopup }
-        ]
-      });
-    }
-
-    firstPopup();
-  </script>
-</body>
-</html>
+          ctx.fillStyle
